@@ -1,0 +1,60 @@
+Use following json as input and suggest me time to work on my todo and complete on time. can you respond the result in json format which can be imported to google calendar using api.
+
+
+{
+  "todo": [
+    {
+      "nameoftask": "college application",
+      "enddate": "2024-10-15"
+    },
+    {
+      "nameoftask": "english homework",
+      "enddate": "2024-10-01"
+    }
+  ],
+  "mycalendarlist": [
+    {
+      "task": "soccer practice",
+      "schedule": "5pm everyday"
+    },
+    {
+      "task": "maths study",
+      "schedule": "everyday 1 hour in the evening"
+    }
+  ]
+}
+
+format output in following json format
+
+[
+  {
+    "summary": "English Homework",
+    "start": {
+      "dateTime": "2024-09-14T16:00:00",
+      "timeZone": "America/New_York"
+    },
+    "end": {
+      "dateTime": "2024-09-14T17:00:00",
+      "timeZone": "America/New_York"
+    },
+    "recurrence": [
+      "RRULE:FREQ=DAILY;UNTIL=20241001T235959Z;BYDAY=MO,TU,WE,TH,FR"
+    ],
+    "description": "Complete English homework before October 1 deadline."
+  },
+  {
+    "summary": "College Application",
+    "start": {
+      "dateTime": "2024-09-14T18:30:00",
+      "timeZone": "America/New_York"
+    },
+    "end": {
+      "dateTime": "2024-09-14T19:30:00",
+      "timeZone": "America/New_York"
+    },
+    "recurrence": [
+      "RRULE:FREQ=DAILY;UNTIL=20241015T235959Z;BYDAY=MO,TU,WE,TH,FR"
+    ],
+    "description": "Work on college application to meet October 15 deadline."
+  }
+]
