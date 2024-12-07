@@ -1,10 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import AddItem from './components/AddItem';
+import AddExistingSchedule from './components/AddExistingSchedule';
 import ListItems from './components/ListItems';
 import Help from './components/Help';
 import Empty from "./components/Empty";
 import TodoList from './components/TodoList';
+import ExistingScheduleList from './components/ExistingScheduleList';
 import Header from './components/Header';
 import PlanTasks from './components/PlanTasks';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
@@ -14,6 +16,7 @@ import styled from "styled-components/native";
 
 export default function App() {
   const [list, setList] = useState([]);
+  const [existingScheduleList, setExistingScheduleList] = useState([]);
   const addItem = (text, dueDateText) => {
     const newItem = {
       id: uuidv4(),
@@ -25,6 +28,19 @@ export default function App() {
   const DeleteItem = (id) => {
     const newList = list.filter((item) => item.id !== id);
     setList(newList);
+  };
+
+  const addExistingScheduleItem = (task, schedule) => {
+    const newItem = {
+      id: uuidv4(),
+      task: task,
+      schedule: schedule,
+    };
+    setExistingScheduleList([newItem, ...existingScheduleList]);
+  };
+  const DeleteExistingScheduleItem = (id) => {
+    const newList = existingScheduleList.filter((item) => item.id !== id);
+    setExistingScheduleList(newList);
   };
 
   return (
@@ -44,7 +60,15 @@ export default function App() {
               )}
             />
            <AddItem addItem={addItem}></AddItem>
-           <PlanTasks tasks={list}></PlanTasks>
+           <FlatList
+              data={existingScheduleList}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <ExistingScheduleList item={item} deleteExistingScheduleItem={DeleteExistingScheduleItem}  />
+              )}
+            />
+           <AddExistingSchedule addExistingScheduleItem={addExistingScheduleItem}></AddExistingSchedule>
+           <PlanTasks tasks={list} existingScheduleList={existingScheduleList}></PlanTasks>
       </View>
     </ComponentContainer>
   );

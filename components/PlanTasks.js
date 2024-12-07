@@ -4,9 +4,9 @@ import { View, Text, Button, StyleSheet, Alert, Linking } from 'react-native';
 import styled from 'styled-components/native';
 import axios from 'axios';
 
-const API_KEY = 'dummykey'; // Replace with your OpenAI API key
+const API_KEY = 'DUMMY_KEY'; // Replace with your OpenAI API key
 
-async function getChatGPTPlan(tasks) {
+async function getChatGPTPlan(tasks, existingScheduleList) {
     const mycalendarlist = [
         { task: "soccer practice", schedule: "5pm everyday" },
         { task: "maths study", schedule: "everyday 1 hour in the evening" }
@@ -22,7 +22,8 @@ async function getChatGPTPlan(tasks) {
         }
     ];
     
-    const formattedTasks = formatTasksForChatGPT(tasks, mycalendarlist);
+    //const formattedTasks = formatTasksForChatGPT(tasks, mycalendarlist);
+    const formattedTasks = formatTasksForChatGPT(tasks, existingScheduleList);
     const taskList = JSON.stringify(formattedTasks, null, 2);
     const responseJsonFormat = JSON.stringify(scheduleOutputEventsFormat, null, 2);
 
@@ -67,12 +68,12 @@ function formatGoogleCalendarLink(event) {
     return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(summary)}&dates=${startUTC}/${endUTC}&details=${encodeURIComponent(description)}`;
 }
 
-export default function PlanTasks({ tasks }) {
+export default function PlanTasks({ tasks, existingScheduleList }) {
     const [links, setLinks] = useState([]);
 
     const handlePlanTasks = async () => {
         try {
-            const response = await getChatGPTPlan(tasks);
+            const response = await getChatGPTPlan(tasks, existingScheduleList);
             const generatedLinks = response.map(event => ({
                 ...event,
                 link: formatGoogleCalendarLink(event)
